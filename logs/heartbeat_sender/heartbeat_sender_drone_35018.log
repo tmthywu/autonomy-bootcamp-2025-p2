@@ -1,0 +1,12 @@
+21:36:07: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 40] Logger initialized
+21:36:12: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+21:36:13: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+21:36:14: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+21:36:15: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+21:36:16: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+21:36:17: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+21:36:18: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+21:36:19: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+21:36:20: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+21:36:21: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+21:36:22: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/tests/integration/mock_drones/heartbeat_sender_drone.py | main | 80] Passed!
