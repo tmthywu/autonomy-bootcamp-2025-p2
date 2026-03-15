@@ -1,0 +1,5 @@
+20:42:17: [INFO] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/modules/telemetry/telemetry_worker.py | telemetry_worker | 46] Logger initialized
+20:42:23: [ERROR] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/modules/telemetry/telemetry.py | run | 152] Timeout: did not receive both ATTITUDE and LOCAL_POSITION_NED within 1 second
+20:42:24: [ERROR] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/modules/telemetry/telemetry.py | run | 152] Timeout: did not receive both ATTITUDE and LOCAL_POSITION_NED within 1 second
+20:42:25: [ERROR] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/modules/telemetry/telemetry.py | run | 152] Timeout: did not receive both ATTITUDE and LOCAL_POSITION_NED within 1 second
+20:42:31: [ERROR] [/Users/jiabaowu/repos/autonomy-bootcamp-2025-p2/modules/telemetry/telemetry.py | run | 152] Timeout: did not receive both ATTITUDE and LOCAL_POSITION_NED within 1 second
