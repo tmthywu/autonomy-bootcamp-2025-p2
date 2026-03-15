@@ -51,7 +51,7 @@ class Command:  # pylint: disable=too-many-instance-attributes
         """
         try:
             return True, cls(cls.__private_key, connection, target, local_logger)
-        except Exception as e:
+        except (OSError, TimeoutError, TypeError, AttributeError) as e:
             local_logger.error(f"Failed to create Command: {e}", True)
             return False, None
 
@@ -126,7 +126,7 @@ class Command:  # pylint: disable=too-many-instance-attributes
                     self._target.z,  # param7: target altitude
                 )
                 output_strings.append(f"CHANGE ALTITUDE: {delta_z}")
-            except Exception as e:
+            except (OSError, TimeoutError) as e:
                 self._logger.error(f"Failed to send altitude command: {e}", True)
         elif (
             telemetry_data.x is not None
@@ -165,7 +165,7 @@ class Command:  # pylint: disable=too-many-instance-attributes
                         0,  # param7
                     )
                     output_strings.append(f"CHANGE YAW: {delta_yaw_deg}")
-                except Exception as e:
+                except (OSError, TimeoutError) as e:
                     self._logger.error(f"Failed to send yaw command: {e}", True)
 
         return output_strings

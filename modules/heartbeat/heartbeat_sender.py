@@ -28,7 +28,7 @@ class HeartbeatSender:
         """
         try:
             return True, cls(cls.__private_key, connection, local_logger)
-        except Exception as e:
+        except (OSError, TimeoutError, TypeError, AttributeError) as e:
             local_logger.error(f"Failed to create HeartbeatSender: {e}", True)
             return False, None
 
@@ -37,7 +37,7 @@ class HeartbeatSender:
         key: object,
         connection: mavutil.mavfile,
         local_logger: logger.Logger,
-    ):
+    ) -> None:
         assert key is HeartbeatSender.__private_key, "Use create() method"
 
         self._connection = connection
@@ -57,7 +57,7 @@ class HeartbeatSender:
                 0,
             )
             return True
-        except Exception as e:
+        except (OSError, TimeoutError) as e:
             self._logger.error(f"Failed to send heartbeat: {e}", True)
             return False
 

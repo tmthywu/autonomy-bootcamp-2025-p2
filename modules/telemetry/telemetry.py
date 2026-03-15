@@ -86,7 +86,7 @@ class Telemetry:
         """
         try:
             return True, cls(cls.__private_key, connection, local_logger)
-        except Exception as e:
+        except (OSError, TimeoutError, TypeError, AttributeError) as e:
             local_logger.error(f"Failed to create Telemetry: {e}", True)
             return False, None
 
@@ -114,7 +114,7 @@ class Telemetry:
         while time.time() - start < TELEMETRY_TIMEOUT:
             try:
                 msg = self._connection.recv_match(blocking=True, timeout=0.1)
-            except Exception as e:
+            except (OSError, TimeoutError) as e:
                 self._logger.error(f"Error receiving telemetry: {e}", True)
                 return False, None
 

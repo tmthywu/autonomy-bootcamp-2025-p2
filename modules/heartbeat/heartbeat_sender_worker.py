@@ -8,10 +8,10 @@ import time
 
 from pymavlink import mavutil
 
-from ..common.modules.logger import logger
 from utilities.workers import worker_controller
-from . import heartbeat_sender
 
+from ..common.modules.logger import logger
+from . import heartbeat_sender
 
 
 # =================================================================================================

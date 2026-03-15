@@ -205,12 +205,10 @@ def main() -> int:
     # Main's work: read from all queues that output to main, and log any commands that we make
     # Continue running for 100 seconds or until the drone disconnects
     start_time = time.time()
-    disconnected = False
     while time.time() - start_time < RUN_DURATION_SECONDS:
         try:
             status = heartbeat_receiver_to_main_queue.queue.get(timeout=0.5)
             if status == "Disconnected":
-                disconnected = True
                 break
         except queue.Empty:
             pass

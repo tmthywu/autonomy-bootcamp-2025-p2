@@ -4,8 +4,9 @@ Heartbeat receiving logic.
 
 from pymavlink import mavutil
 
-from ..common.modules.logger import logger
 from utilities.workers import queue_proxy_wrapper
+
+from ..common.modules.logger import logger
 
 
 # =================================================================================================
@@ -33,7 +34,7 @@ class HeartbeatReceiver:
         """
         try:
             return True, cls(cls.__private_key, connection, output_queue, local_logger)
-        except Exception as e:
+        except (OSError, TimeoutError, TypeError, AttributeError) as e:
             local_logger.error(f"Failed to create HeartbeatReceiver: {e}", True)
             return False, None
 
@@ -61,10 +62,8 @@ class HeartbeatReceiver:
         Returns True to continue, False to stop (e.g. on sentinel).
         """
         try:
-            msg = self._connection.recv_match(
-                type="HEARTBEAT", blocking=True, timeout=1
-            )
-        except Exception as e:
+            msg = self._connection.recv_match(type="HEARTBEAT", blocking=True, timeout=1)
+        except (OSError, TimeoutError) as e:
             self._logger.error(f"Error receiving heartbeat: {e}", True)
             self._missed_count += 1
             if self._missed_count >= DISCONNECT_THRESHOLD:

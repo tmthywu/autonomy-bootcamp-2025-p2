@@ -78,27 +78,26 @@ def read_queue(
 # =================================================================================================
 
 
-def main() -> int:
+def main(
+    config: "dict | None" = None,
+    main_logger: "logger.Logger | None" = None,
+) -> int:
     """
     Start the heartbeat receiver worker simulation.
     """
-    # Configuration settings
-    result, config = read_yaml.open_config(logger.CONFIG_FILE_PATH)
-    if not result:
-        print("ERROR: Failed to load configuration file")
-        return -1
+    if config is None:
+        result, config = read_yaml.open_config(logger.CONFIG_FILE_PATH)
+        if not result:
+            print("ERROR: Failed to load configuration file")
+            return -1
+        assert config is not None
 
-    # Get Pylance to stop complaining
-    assert config is not None
-
-    # Setup main logger
-    result, main_logger, _ = logger_main_setup.setup_main_logger(config)
-    if not result:
-        print("ERROR: Failed to create main logger")
-        return -1
-
-    # Get Pylance to stop complaining
-    assert main_logger is not None
+    if main_logger is None:
+        result, main_logger, _ = logger_main_setup.setup_main_logger(config)
+        if not result:
+            print("ERROR: Failed to create main logger")
+            return -1
+        assert main_logger is not None
 
     # Mocked GCS, connect to mocked drone which is listening at CONNECTION_STRING
     # source_system = 255 (groundside)
@@ -137,9 +136,7 @@ def main() -> int:
     # Read the main queue (worker outputs)
     threading.Thread(target=read_queue, args=(output_queue, main_logger)).start()
 
-    heartbeat_receiver_worker.heartbeat_receiver_worker(
-        connection, output_queue, controller
-    )
+    heartbeat_receiver_worker.heartbeat_receiver_worker(connection, output_queue, controller)
     # =============================================================================================
     #                          ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
     # =============================================================================================
@@ -148,11 +145,21 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    # Start drone in another process
+    result, config = read_yaml.open_config(logger.CONFIG_FILE_PATH)
+    if not result:
+        print("ERROR: Failed to load configuration file")
+        exit(-1)
+    assert config is not None
+    result, main_logger, _ = logger_main_setup.setup_main_logger(config)
+    if not result:
+        print("ERROR: Failed to create main logger")
+        exit(-1)
+    assert main_logger is not None
+
     drone_process = mp.Process(target=start_drone)
     drone_process.start()
 
-    result_main = main()
+    result_main = main(config=config, main_logger=main_logger)
     if result_main < 0:
         print(f"Failed with return code {result_main}")
     else:
