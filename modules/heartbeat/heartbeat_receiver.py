@@ -4,8 +4,6 @@ Heartbeat receiving logic.
 
 from pymavlink import mavutil
 
-from utilities.workers import queue_proxy_wrapper
-
 from ..common.modules.logger import logger
 
 
@@ -26,14 +24,13 @@ class HeartbeatReceiver:
     def create(
         cls,
         connection: mavutil.mavfile,
-        output_queue: queue_proxy_wrapper.QueueProxyWrapper,
         local_logger: logger.Logger,
     ) -> "tuple[True, HeartbeatReceiver] | tuple[False, None]":
         """
         Falliable create (instantiation) method to create a HeartbeatReceiver object.
         """
         try:
-            return True, cls(cls.__private_key, connection, output_queue, local_logger)
+            return True, cls(cls.__private_key, connection, local_logger)
         except (OSError, TimeoutError, TypeError, AttributeError) as e:
             local_logger.error(f"Failed to create HeartbeatReceiver: {e}", True)
             return False, None
@@ -42,24 +39,22 @@ class HeartbeatReceiver:
         self,
         key: object,
         connection: mavutil.mavfile,
-        output_queue: queue_proxy_wrapper.QueueProxyWrapper,
         local_logger: logger.Logger,
     ) -> None:
         assert key is HeartbeatReceiver.__private_key, "Use create() method"
 
         self._connection = connection
-        self._output_queue = output_queue
         self._logger = local_logger
         self._missed_count = 0
         self._connected = False
 
-    def run(self) -> bool:
+    def run(self) -> tuple[bool, str]:
         """
         Attempt to receive a heartbeat message.
         If disconnected for over a threshold number of periods,
         the connection is considered disconnected.
-        Every second, reports current state ("Connected" or "Disconnected") to the output queue.
-        Returns True to continue, False to stop (e.g. on sentinel).
+        Every second, returns current state ("Connected" or "Disconnected").
+        Returns (True, state) to continue, (False, state) to stop (e.g. on sentinel).
         """
         try:
             msg = self._connection.recv_match(type="HEARTBEAT", blocking=True, timeout=1)
@@ -69,8 +64,7 @@ class HeartbeatReceiver:
             if self._missed_count >= DISCONNECT_THRESHOLD:
                 self._connected = False
             state = "Connected" if self._connected else "Disconnected"
-            self._output_queue.queue.put(state)
-            return True
+            return True, state
 
         if msg and msg.get_type() == "HEARTBEAT":
             self._missed_count = 0
@@ -82,8 +76,7 @@ class HeartbeatReceiver:
                 self._connected = False
 
         state = "Connected" if self._connected else "Disconnected"
-        self._output_queue.queue.put(state)
-        return True
+        return True, state
 
 
 # =================================================================================================

@@ -42,7 +42,7 @@ def heartbeat_sender_worker(
     # Get Pylance to stop complaining
     assert local_logger is not None
 
-    local_logger.info("Logger initialized", True)
+    local_logger.info("Heartbeat sender logger initialized", True)
 
     # =============================================================================================
     #                          ↓ BOOTCAMPERS MODIFY BELOW THIS COMMENT ↓
@@ -51,7 +51,7 @@ def heartbeat_sender_worker(
     result, heartbeat_sender_instance = heartbeat_sender.HeartbeatSender.create(
         connection, local_logger
     )
-    if not result or heartbeat_sender_instance is None:
+    if not result:
         local_logger.error("Failed to create HeartbeatSender", True)
         return
 

@@ -43,16 +43,16 @@ def heartbeat_receiver_worker(
     # Get Pylance to stop complaining
     assert local_logger is not None
 
-    local_logger.info("Logger initialized", True)
+    local_logger.info("Heartbeat receiver logger initialized", True)
 
     # =============================================================================================
     #                          ↓ BOOTCAMPERS MODIFY BELOW THIS COMMENT ↓
     # =============================================================================================
     # Instantiate class object (heartbeat_receiver.HeartbeatReceiver)
     result, heartbeat_receiver_instance = heartbeat_receiver.HeartbeatReceiver.create(
-        connection, output_queue, local_logger
+        connection, local_logger
     )
-    if not result or heartbeat_receiver_instance is None:
+    if not result:
         local_logger.error("Failed to create HeartbeatReceiver", True)
         return
 
@@ -60,7 +60,10 @@ def heartbeat_receiver_worker(
     while not controller.is_exit_requested():
         controller.check_pause()
 
-        heartbeat_receiver_instance.run()
+        continue_loop, state = heartbeat_receiver_instance.run()
+        if not continue_loop:
+            break
+        output_queue.queue.put(state)
 
 
 # =================================================================================================

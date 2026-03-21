@@ -43,14 +43,14 @@ def telemetry_worker(
     # Get Pylance to stop complaining
     assert local_logger is not None
 
-    local_logger.info("Logger initialized", True)
+    local_logger.info("Telemetry logger initialized", True)
 
     # =============================================================================================
     #                          ↓ BOOTCAMPERS MODIFY BELOW THIS COMMENT ↓
     # =============================================================================================
     # Instantiate class object (telemetry.Telemetry)
     result, telemetry_instance = telemetry.Telemetry.create(connection, local_logger)
-    if not result or telemetry_instance is None:
+    if not result:
         local_logger.error("Failed to create Telemetry", True)
         return
 
@@ -59,7 +59,7 @@ def telemetry_worker(
         controller.check_pause()
 
         success, telemetry_data = telemetry_instance.run()
-        if success and telemetry_data is not None:
+        if success:
             output_queue.queue.put(telemetry_data)
 
 
